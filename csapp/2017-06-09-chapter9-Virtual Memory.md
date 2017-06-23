@@ -8,4 +8,9 @@
 - It simplifies memory management by **providing each process with an uniform address space**.
 - It protects the address space of each process from corruption by other processes.
 
-# Physical and  
+# Physical and  Virtual Addressing
+
+![][image-1]
+
+
+[image-1]:	http://orn9eftv1.bkt.clouddn.com/a-system-using-physical-addressing.png
