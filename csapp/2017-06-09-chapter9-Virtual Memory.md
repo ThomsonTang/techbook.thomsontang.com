@@ -14,7 +14,7 @@
 > Used in “simple” systems like embedded micro-controllers in devices like cars, elevators, and digital picture frames.
 
 - **Virtual Addressing**:
-
+![][image-2]
 > - Used in all modern servers, desktops, and laptops
 > - One of the great ideas in computer science
 > - **Address translation**: the task of converting a virtual address to a physical one. Dedicated hardware on the CPU chip called the `memory management unit(MMU)` translates virtual addresses on the fly, using a look-up table stored in main memory whose contents are managed by the operating system.
@@ -38,4 +38,5 @@
 	- one process can’t interfere with another’s memory
 	- User program cannot access privileged kernel information
 
-[image-1]:	http://static.thomson.com/csapp/physical-addressing.png
+[image-1]:	http://static.thomson.com/csapp/vm-physical-addressing.png
+[image-2]:	http://static.thomson.com/csapp/vm-virtual-addressing.png
