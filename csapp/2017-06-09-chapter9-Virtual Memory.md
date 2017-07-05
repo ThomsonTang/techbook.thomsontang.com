@@ -38,5 +38,33 @@
 	- one process can’t interfere with another’s memory
 	- User program cannot access privileged kernel information
 
+## VM as a Tool for Caching
+- **Virtual memory** is an array of N contiguous bytes stored on disk.
+- The contents of the array on disk are cached in **physical memory(DRAM cache)**.
+	- These cache blocks are called **pages (size is P = 2^p bytes)**
+	> VM systems handle this by partitioning the virtual memory into fixed-sized blocks called **virtual pages (VPs)**. Each virtual page is P=2^p bytes in size. Similarly, physical memory is partitioned into **physical pages (PPs)**, also P bytes in size. (Physical pages are also referred to as page frames.)
+![][image-3]
+Three disjoint subsets of virtual pages:
+- **Unallocated**: Pages that have not yet been allocated (or created) by the VM system.
+- **Uncached**: Allocated pages that are not cached in physical memory.
+- **Cached**: Allocated pages that are currently cached in physical memory.
+
+### DRAM Cache Organization
+> the bottom line is that the organization of the DRAM cache is driven entirely by the enormous cost of misses.(归根结底，DRAM缓存的组织结构完全是由巨大的不命中开销驱动的）
+- DRAM cache organization driven by the enormous miss penalty: 
+	- DRAM is about `10x` slower than SRAM(the L1, L2 and L3 cache)
+	- Disk is about `10,000x` slower than DRAM
+
+- Consequences
+	- Large page (block) size: typically `4-8 KB`, sometimes `4MB`
+	- Fully associative:
+		- Any VP can be placed in any PP
+		- Requires a “large” mapping function - different from CPU caches
+	- Highly sophisticated, expensive replacement algorithms
+		- Too complicated and open-ended to be implemented in hardware
+	- Write-back rather than write-through （总是使用写回，而不是直接写）
+
+
 [image-1]:	http://static.thomson.com/csapp/vm-physical-addressing.png
 [image-2]:	http://static.thomson.com/csapp/vm-virtual-addressing.png
+[image-3]:	http://static.thomson.com/csapp/vm-virtual-pages-physical-pages.png
