@@ -64,7 +64,30 @@ Three disjoint subsets of virtual pages:
 		- Too complicated and open-ended to be implemented in hardware
 	- Write-back rather than write-through （总是使用写回，而不是直接写）
 
+### Page tables
+> As with any cache, the VM system must have some way to determine if a virtual page is cached somewhere in DRAM. These capabilities are provided by **a combination of operating system software, address translation hardware in the MMU(memory management unit), and a data structure stored in physical memory known as a page table that maps virtual pages to physical pages**.   
+> A page table is an array of page table entries(PTEs) that maps virtual pages to physical pages.
+
+![][image-4]
+
+The indications of each PTE which consists of **a valid bit** and **an n-bit address field**:
+- Valid bit is set, the address field indicates the start of the corresponding physical page in DRAM where the virtual page is cached.
+- Valid bit is not set, then a null address indicates that the virtual page has not yet been allocated.
+- Valid bit is not set, the address points to the start of the virtual page on disk.
+
+### Page Hits
+> Page hit: reference to VM word that is in physical memory (DRAM cache hit).
+
+![][image-5]
+
+### Page Faults
+In virtual memory parlance, a DRAM cache miss is known as a **page fault**. 
+> Page fault: reference to VM word that is not in physical memory (DRAM cache miss).
+
+
 
 [image-1]:	http://static.thomson.com/csapp/vm-physical-addressing.png
 [image-2]:	http://static.thomson.com/csapp/vm-virtual-addressing.png
-[image-3]:	http://static.thomson.com/csapp/vm-virtual-pages-physical-pages.png
+[image-3]:	http://static.thomson.com/csapp/vm-virtual-pages-physical-pages.png "virtual pages and physical pages"
+[image-4]:	http://static.thomson.com/csapp/vm-page-table.png "Page table"
+[image-5]:	http://static.thomson.com/csapp/vm-page-hit.png "Page hit"
