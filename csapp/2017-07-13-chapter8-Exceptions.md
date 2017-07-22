@@ -120,6 +120,10 @@ Although the contents of the memory associated with each private address space i
 ![][image-4]
 
 ### Context Switching
+- Processes are managed by a shared chunk of OS code called the **kernel**
+	- Important: **the kernel is not a separate process, but rather runs as part of some user process**
+- Control flow passes from one process to another via a **content switch**
+
 
 
 
