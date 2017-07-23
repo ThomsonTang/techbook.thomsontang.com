@@ -101,6 +101,41 @@ In virtual memory parlance, a DRAM cache miss is known as a **page fault**.
 - If (SUM(working set sizes) \> main memory size)
 	- Thrashing: Performance meltdown where pages are swapped (copied) in and out continuously
 
+## VM as a Tool for Memory Management
+> Virtual memory was still a useful mechanism because it greatly simplified memory management and provided a natural way to protected memory.
+> In fact, operating system provide a separate page table, and thus a separate virtual address space, for each process.
+
+In particular, VM simplifies linking and loading, the sharing of code and data, and allocating memory to applications.
+- **Simplifying linking**: A separate address space allows each process to use the same basic format for its memory image, regardless of where the code and data actually reside in physical memory.
+- **Simplifying loading**: Virtual memory also makes it easy to load executable and shared object files into memory.
+- **Simplifying sharing**: Separate address spaces provide the operating system with a consistent mechanism for managing sharing between user processes and the operating system itself.
+- **Simplifying memory allocation**: Virtual memory provides a simple mechanism for allocating additional memory to user processes.
+
+### Key idea: each process has its own virtual address space
+- it can view memory as a simple linear array
+- Mapping function scatters addresses through physical memory
+	- Well chosen mapping simplify memory allocation and management
+
+![][image-7]
+
+### Memory allocation
+- Each virtual page can be mapped to any physical page
+- A virtual page can be stored in different physical pages at different times
+
+### Sharing code and data among processes
+- Map virtual pages to the same physical page
+
+### Simplifying Linking and Loading
+- Liking
+	- Each program has similar virtual address space
+	- Code, stack, and shared libraries always start at the same address
+
+- Loading
+	- `execve()` allocates virtual pages for **.text** and **.data** sections = creates PTEs marked as invalid
+	- The **.text** and **.data** sections are copied, page by page, on demand by the virtual memory system
+
+![][image-8]
+
 
 
 
@@ -111,3 +146,5 @@ In virtual memory parlance, a DRAM cache miss is known as a **page fault**.
 [image-4]:	https://user-images.githubusercontent.com/980216/28491825-1550ed84-6f2a-11e7-9b8d-6e02ae56ae37.png "Page table"
 [image-5]:	https://user-images.githubusercontent.com/980216/28491837-36c0db3c-6f2a-11e7-98c3-9b7a9b153d5e.png "Page hit"
 [image-6]:	https://user-images.githubusercontent.com/980216/28491847-5033c520-6f2a-11e7-9941-fce183b4b943.png
+[image-7]:	https://user-images.githubusercontent.com/980216/28499674-bf2468f4-6fed-11e7-8950-e1b903c8ae28.png
+[image-8]:	https://user-images.githubusercontent.com/980216/28499678-d63cbb4a-6fed-11e7-9fa0-0fe815e18487.png
