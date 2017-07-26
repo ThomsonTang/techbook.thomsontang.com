@@ -10,11 +10,15 @@
 
 ## Physical and  Virtual Addressing
 - **Physical Addressing**:
+
 ![][image-1]
+
 > Used in “simple” systems like embedded micro-controllers in devices like cars, elevators, and digital picture frames.
 
 - **Virtual Addressing**:
+
 ![][image-2]
+
 > - Used in all modern servers, desktops, and laptops
 > - One of the great ideas in computer science
 > - **Address translation**: the task of converting a virtual address to a physical one. Dedicated hardware on the CPU chip called the `memory management unit(MMU)` translates virtual addresses on the fly, using a look-up table stored in main memory whose contents are managed by the operating system.
