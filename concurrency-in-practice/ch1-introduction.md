@@ -25,9 +25,20 @@
 		}
 		```
 
-		上面的例子的问题主要在于**如果两个线程执行的时机不对，那么在调用 `getNext()` 方法后会得到相同的值**。这种是一种很常见的并发安全问题，称之为**竞态条件（Race Condition）**。在多线程环境下，`getValue()` 是否会返回唯一的值，取决于运行时对线程中操作的交替执行方式，但这并不是我们想要看到的结果。
+		上面的例子的问题主要在于**如果两个线程执行的时机不对，那么在调用 `getNext()` 方法后会得到相同的值**。这种是一种很常见的并发安全问题，称之为**竞态条件（Race Condition）**。在多线程环境下，`getValue()` 是否会返回唯一的值，取决于运行时对线程中操作的交替执行方式，但这并不是我们想要看到的结果。想要多线程程序的行为可以预测，我们就必须对**共享变量**的访问操作进行一定的协同，使得他们不会互相干扰。幸运的是，**Java提供了各种同步机制来协调这种访问**。
 		- Thread-safe Sequence Generator:
 
 			```java
-			public class Sequence {}
+			@ThreadSafe
+			public class Sequence {
+					private int value;
+					
+					public synchronized int getNext() {
+						return value++;
+					}
+			}
 			```
+
+将取值方法 `getNext()` 改为同步方法以后就可以修复之前的线程安全性问题了。
+
+- **Liveness Hazards**:
