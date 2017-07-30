@@ -30,4 +30,4 @@
 - **有序节点**：一个znode还可以设置为有序节点。一个有序的znode节点被分配唯一一个单调递增的整数，当创建有序节点时，一个序号会被追加到路径之后。例如：`/tasks/task-1`
 
 
-[image-1]:	http://static.thomson.com/zookeeper/zk-node-tree-structure.png
+[image-1]:	https://user-images.githubusercontent.com/980216/28758132-79714ee8-75c5-11e7-921b-98a08d7b55b5.png
