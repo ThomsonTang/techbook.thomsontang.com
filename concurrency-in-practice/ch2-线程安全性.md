@@ -31,12 +31,11 @@
 	```java
 	@ThreadSafe
 	public class StatelessFactorizer implements Servlet {
-			public void service(ServletRequest req, ServletResponse resp) {
-				BigInteger i = extractFromRequest(req);
-				BigInteger[] factors = factor(i);
-				encodeIntoResponse(resp, factors);
-			}
+		public void service(ServletRequest req, ServletResponse resp) {
+			BigInteger i = extractFromRequest(req);
+			BigInteger[] factors = factor(i);
+			encodeIntoResponse(resp, factors);
+		}
 	}
 	```
-
-> 无状态对象一定是线程安全的。大多数Servlet都是无状态的，这大大降低了在实现Servlet线程安全性时的复杂性，只有当Servlet在处理请求时需要保存一些信息，线程安全性才会成为一个问题。
+	> 无状态对象一定是线程安全的。大多数Servlet都是无状态的，这大大降低了在实现Servlet线程安全性时的复杂性，只有当Servlet在处理请求时需要保存一些信息，线程安全性才会成为一个问题。
