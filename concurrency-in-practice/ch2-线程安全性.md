@@ -63,6 +63,7 @@
 		```
 	- `Check-then-Act`，「先检查后执行」的操作序列，这是延迟初始化中常见的一种竞态条件。
 		```java
+		@NotThreadSafe
 		public class LazyInitRace {
 				private ExpensiveObject instance = null;
 				public ExpensiveObject getInstance() {
@@ -83,4 +84,19 @@
 - 例子：
 	- **加锁机制**：这是Java用于确保原子性的内置机制。
 	- 使用现有的线程安全的类：比如原子操作类`AtomicInteger`、`AtomicLong`，或线程安全容器类`ConcurrentHashMap`等。
-	- 
+		```java
+		@ThreadSafe
+		public class CountingFactorizer implements Servlet {
+				private final AtomicLong count = new AtomicLong(0);
+				public long getCount() {
+					return count.get();
+				}
+				public viod service(ServletRequest req, ServletResponse resp) {
+					BigInteger[] i = extractFromRequest(req);
+					BigInteget[] factors = factor(i);
+					count.incrementAndGet();
+					encodeIntoResponse(resp,factors);
+				}
+		}
+		```
+	- 在实际编程中，应尽可能地使用现有的线程安全对象，比如`AtomicLong`等。
