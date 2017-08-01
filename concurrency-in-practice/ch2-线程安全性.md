@@ -39,3 +39,48 @@
 	}
 	```
 	> 无状态对象一定是线程安全的。大多数Servlet都是无状态的，这大大降低了在实现Servlet线程安全性时的复杂性，只有当Servlet在处理请求时需要保存一些信息，线程安全性才会成为一个问题。
+
+## 术语卡
+- 术语：竞态条件（Race Condition）
+- 印象：在并发编程中，由于不恰当的执行时序而出现不正确的结果，称之为竞态条件。
+- 例子：
+	- 有状态的Servlet，其中的`++count`是一个`Read-Modify-Write`的操作序列，这个操作不是**原子性**的，是**非线程安全**的。
+
+		```java
+		@NotThreadSafe
+		public class UnsafeCountingFactorizer implements Servlet {
+			private long count = 0;
+			public long getCount() {
+				return count;
+			}
+			public void service(ServletRequest req, ServletResponse resp) {
+				BigInteger i = extractFromRequest(req);
+				BigInteger[] factors = factor(i);
+				++count;
+				encodeIntoResponse(resp, factors);
+			}
+		}
+		```
+	- `Check-then-Act`，「先检查后执行」的操作序列，这是延迟初始化中常见的一种竞态条件。
+		```java
+		public class LazyInitRace {
+				private ExpensiveObject instance = null;
+				public ExpensiveObject getInstance() {
+					if (instance == null) {
+						instance = new ExpensiveObject();
+					}
+					return instance;
+				}
+		}
+		```
+	- 与大多数并发错误一样，竞态条件并不总是会产生错误，还需要某种不恰当的执行时序。
+- 出处：《Java Concurrency in Practice》第二章——线程安全性——原子性
+
+
+## 术语卡
+- 术语：复合操作
+- 印象：「竞态条件」部分提到的`Read-Modify-Write`和`Check-then-Act`两种操作序列本质上都应该是**原子性**的，这种操作统称为**复合操作**，即**包含了一组以原子方式执行的操作以确保线程安全性**。
+- 例子：
+	- **加锁机制**：这是Java用于确保原子性的内置机制。
+	- 使用现有的线程安全的类：比如原子操作类`AtomicInteger`、`AtomicLong`，或线程安全容器类`ConcurrentHashMap`等。
+	- 
