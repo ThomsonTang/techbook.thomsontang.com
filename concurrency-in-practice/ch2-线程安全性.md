@@ -31,11 +31,11 @@
 	```java
 	@ThreadSafe
 	public class StatelessFactorizer implements Servlet {
-		public void service(ServletRequest req, ServletResponse resp) {
-			BigInteger i = extractFromRequest(req);
-			BigInteger[] factors = factor(i);
-			encodeIntoResponse(resp, factors);
-		}
+	    public void service(ServletRequest req, ServletResponse resp) {
+	        BigInteger i = extractFromRequest(req);
+	        BigInteger[] factors = factor(i);
+	        encodeIntoResponse(resp, factors);
+	    }
 	}
 	```
 	> 无状态对象一定是线程安全的。大多数Servlet都是无状态的，这大大降低了在实现Servlet线程安全性时的复杂性，只有当Servlet在处理请求时需要保存一些信息，线程安全性才会成为一个问题。
@@ -49,29 +49,29 @@
 		```java
 		@NotThreadSafe
 		public class UnsafeCountingFactorizer implements Servlet {
-			private long count = 0;
-			public long getCount() {
-				return count;
-			}
-			public void service(ServletRequest req, ServletResponse resp) {
-				BigInteger i = extractFromRequest(req);
-				BigInteger[] factors = factor(i);
-				++count;
-				encodeIntoResponse(resp, factors);
-			}
+		    private long count = 0;
+		    public long getCount() {
+		        return count;
+		    }
+		    public void service(ServletRequest req, ServletResponse resp) {
+		        BigInteger i = extractFromRequest(req);
+		        BigInteger[] factors = factor(i);
+		        ++count;
+		        encodeIntoResponse(resp, factors);
+		    }
 		}
 		```
 	- `Check-then-Act`，「先检查后执行」的操作序列，这是延迟初始化中常见的一种竞态条件。
 		```java
 		@NotThreadSafe
 		public class LazyInitRace {
-				private ExpensiveObject instance = null;
-				public ExpensiveObject getInstance() {
-					if (instance == null) {
-						instance = new ExpensiveObject();
-					}
-					return instance;
-				}
+		        private ExpensiveObject instance = null;
+		        public ExpensiveObject getInstance() {
+		            if (instance == null) {
+		                instance = new ExpensiveObject();
+		            }
+		            return instance;
+		        }
 		}
 		```
 	- 与大多数并发错误一样，竞态条件并不总是会产生错误，还需要某种不恰当的执行时序。
@@ -88,16 +88,16 @@
 		```java
 		@ThreadSafe
 		public class CountingFactorizer implements Servlet {
-				private final AtomicLong count = new AtomicLong(0);
-				public long getCount() {
-					return count.get();
-				}
-				public viod service(ServletRequest req, ServletResponse resp) {
-					BigInteger[] i = extractFromRequest(req);
-					BigInteget[] factors = factor(i);
-					count.incrementAndGet();
-					encodeIntoResponse(resp,factors);
-				}
+		        private final AtomicLong count = new AtomicLong(0);
+		        public long getCount() {
+		            return count.get();
+		        }
+		        public viod service(ServletRequest req, ServletResponse resp) {
+		            BigInteger[] i = extractFromRequest(req);
+		            BigInteget[] factors = factor(i);
+		            count.incrementAndGet();
+		            encodeIntoResponse(resp,factors);
+		        }
 		}
 		```
 	- 在实际编程中，应尽可能地使用现有的线程安全对象，比如`AtomicLong`等。
@@ -115,14 +115,14 @@
 	- 同步代码块：
 		```java
 		synchronized(lock) {
-				//访问或修改由锁保护的共享状态
+		        //访问或修改由锁保护的共享状态
 		}
 		```
 
 - 同步方法：
 	```java
 	public synchronized void method() {
-			//访问或修改由锁保护的共享状态
+	        //访问或修改由锁保护的共享状态
 	}
 	```
 
@@ -135,13 +135,13 @@
 - 例子：如果内置锁不是可重入的，那么下面的代码将发生死锁。
 	```java
 	public class Widget {
-			public synchronized void doSomething() {...}
+	        public synchronized void doSomething() {...}
 	}
 	public class LoggingWidget extends Widget {
-			public synchronized void doSomething() {
-				System.out.println(toString() + ": calling doSomething...");
-				super.doSomething();
-			}
+	        public synchronized void doSomething() {
+	            System.out.println(toString() + ": calling doSomething...");
+	            super.doSomething();
+	        }
 	}
 	```
 
@@ -167,8 +167,21 @@
 - 例子：如下代码使用`Vector`：
 	```java
 	if (!vector.contains(element)) {
-			vector.add(element);
+	        vector.add(element);
 	}
 	```
 	上述代码中，虽然`contains`和`add`两个方法都是原子方法，但是如上这个「如果不存在就添加」的操作，还是存在竞态条件的。
 
+## 术语卡
+- 术语：不良并发程序
+- 印象：对于有的应用程序而言，可同时调用的数量，不仅受到可用处理资源的限制，还受到应用程序本身结构的限制。
+- 例子：
+	- `UnsafeCachingFactorizer`中将Servlet的`service`方法声明为`synchronized`方法，这样每次只有一个线程可以执行，从本质上来讲背离了`Servlet`框架的初衷，即Servlet需要能同时处理多个请求。
+	- 不过好的一点在于，我们可以通过将同步代码块缩小范围，这样既能确保Servlet的并发性，又能维护线程安全性。
+		查看示例代码：[CacheFactorizer.java][1]
+	- 上述示例中，我们已经不再使用`AtomicLong`类型了，而是使用了简单类型`long`，这是因为**我们已经使用了同步代码块来构造原子操作，而如果两种机制都使用不仅让代码看上去很混乱，不统一，更重要的是在性能可能带来不良影响**。
+	- 通常，在简单性和性能之间存在着相互制约的因素。当实现某个同步策略时，一定不要盲目地为了性能而牺牲简单性（这有可能破坏线程安全性）。
+	- 当执行时间较长的计算或者可能无法快速完成的操作时（例如，网络I/O，控制台I/O），一定不要持有锁。
+
+
+[1]:	https://raw.githubusercontent.com/ThomsonTang/Java-Review/master/concurrency-in-practice/src/main/java/threadsafety/CachedFactorizer.java
