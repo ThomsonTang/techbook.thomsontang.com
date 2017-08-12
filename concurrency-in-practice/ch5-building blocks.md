@@ -14,7 +14,8 @@
 - 反常识：虽然同步集合类是线程安全的，但是有时候还是需要额外的客户端加锁来保护复合操作。集合类中常见的复合操作包括：迭代、获取下一个元素以及有条件的操作，例如：先判断有没有元素，没有再添加。**在同步集合类中，这些复合操作在没有客户端加锁的情况下是线程安全的，但是当其他线程并发的修改集合类是，可能会出现与预期不一致的结果**。
 - 例子：
 	- Compound Actions on a `Vector` that may Produce Confusing Results
+		[CompoundActionOnVector.java][1]
 
-	<script src="https://gist.github.com/ThomsonTang/23945ef7d7a5741b4ff1beda73cf0408.js"></script>
 
 
+[1]:	https://gist.github.com/ThomsonTang/4751d33d55e6c8b819f885bf06ecd3b0
