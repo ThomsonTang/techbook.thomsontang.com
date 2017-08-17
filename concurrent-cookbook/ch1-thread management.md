@@ -1,5 +1,16 @@
 ## 线程的创建和启动
 
+## 术语卡——创建线程的方式
+- implement `Runnable`
+- extends `Thread`
+- using `ThreadFactory.newThread()`
+
+## 术语卡——对线程的操作
+- start
+- sleep
+- interrupt
+- group
+
 ## 术语卡——线程的基本属性
 - 术语： 线程的attribute
 - 印象：
