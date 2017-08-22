@@ -25,3 +25,4 @@
 - 印象：
 	- `Condition`接口对`java.lang.Object`类中的监视器方法（`wait()/notify()/notifyAll()`）进行了提炼和扩展，使得每个对象拥有了更多的类似等待的操作方法，并且这些方法可以和任意的`Lock`接口的实现类组合使用。
 	- `Lock`是`synchronized`的替代者，`Condition`是`Object`监控方法的替代者。
+	- 一个锁通常可能会和一个或者多个condition相关。这些condition都声明在`Condition`接口中。这些condition的目的是允许线程拥有对锁的控制并且能够检查这些条件的正确与否，如果条件是false的那么线程将会阻塞直到被其他线程唤醒。
