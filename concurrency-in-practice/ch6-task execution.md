@@ -37,3 +37,15 @@
 	- `newCachedThreadPool`：创建可缓存的线程池，如果线程池的当前规模超过了处理请求时，那么将回收空闲的线程，而当需求增加时，则可以添加新的线程，线程池的规模不存在任何限制。
 	- `newSingleThreadExecutor`：一个单线程的Executor，它创建单个工作者线程来执行任务，如果该线程异常结束，会创建另一个线程来替代。它可以确保任务按队列中的顺序串行执行。
 	- `newScheduledThreadPool`：创建一个固定长度的线程池，而且以延迟或定时的方式来执行任务。
+
+## 术语卡——ExecutorService
+- 术语：ExecutorService
+- 印象：`ExecutorService`是对`Executor`的扩展，其目的是为了解决执行服务的生命周期，因此其包含了一些用于生命周期管理的方法，同时还有一些用于任务提交的便利方法。
+	- `ExecutorService`的生命周期有3种状态：**运行、关闭和已终止**。
+	- 在`ExecutorService`关闭后提交的任务将由“拒绝执行处理器(Rejected Execution Handler)”来处理。它会抛弃任务，或者使得`execute`方法抛出一个未检查的`RejectedExecutionException`，等所有任务都完成后，`ExecutorService`将转入终止状态。
+- 例子：
+	- `shutdown()`
+	- `shutdownNow()`
+	- `isShutdown()`
+	- `isTerminated()`
+	- `awaitTermination()`
