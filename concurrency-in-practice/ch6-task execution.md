@@ -49,3 +49,10 @@
 	- `isShutdown()`
 	- `isTerminated()`
 	- `awaitTermination()`
+
+## 反常识卡
+- 常识：`Timer`类负责管理延迟任务以及周期任务。
+- 反常识：`Timer`类存在一些缺陷，最好使用`ScheduledThreadPoolExecutor`来代替它。
+- 例子：
+	- `Timer`类在执行所有定时任务时只会创建一个线程。如果某个任务的执行时间过长，那么将破坏其他TimeTask的定时准确性。举例来说，TimerTaskA 需要每10ms执行一次，TimerTaskB 需要执行40ms，那么TaskA要么在TaskB执行完成以后连续的调用4次，要么彻底丢失4次调用。**线程池能不弥补这个缺陷，它可以提供多个线程来执行延时任务和周期任务**。
+	- `Timer`的另一个问题是，如果`TimerTask`抛出了一个未检查异常，那么Timer将表现出糟糕的行为。Timer线程并不捕获异常，因此当`TimerTask`抛出未检查异常时将终止定时线程。这种情况下，Timer也不会恢复线程的执行，而是会错误地认为整个Timer都被取消了。因此，已经被调度但尚未执行的TimerTask将不会再执行，新的任务也不能被调度。
