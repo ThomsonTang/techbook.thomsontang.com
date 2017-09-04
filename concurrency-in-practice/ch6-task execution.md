@@ -72,3 +72,9 @@
 	- `Executor`执行的任务有4个生命周期阶段：创建、提交、开始和完成。在`Executor`框架中，已提交但尚未开始的任务可以取消，但对于已经开始执行的任务，在它们能响应中断时才能取消。
 	- 可以使用`Callable<Void>`来表示无返回值的任务。
 	- `ExecutorService`中的所有`submit`方法都将返回一个`Future`，从而将一个`Runnable`或`Callable`提交给`Executor`，并得到一个`Future`用来获得任务的执行结果或者取消任务。
+
+## 术语卡——CompletionService
+- 术语：CompletionService
+- 印象：
+	- CompletionService将`executor`和`BlockingQueue`的功能融合在一起。你可以将`Callable`任务提交给它来执行，然后使用类似于队列操作的`take`和`poll`等方法来获得已完成的结果，而这些结果会在完成时被封装为`Future`。
+	- `ExecutorCompletionService`实现了`CompetionService`，并将计算部分委托给一个Executor。
