@@ -28,3 +28,14 @@
 - 例子：
 	- `newFixedThreadPool`工厂方法将线程池的基本大小和最大大小设置为参数指定的值，而且创建的线程不会超时。
 	- `newCachedThreadPool`工厂方法将线程池的最大大小设置为`Integer.MAX_VALUE`，而将基本大小设置为零，并将超时设置为1分钟。这种方法创建出来的线程池可以被无线扩展，并且当需求降低时会自动收缩。
+		> 对于Executor，`newCachedThreadPool`工厂方法是一个很好的默认选择，它能提供比固定大小的线程池更好的排队性能。
+
+## 术语卡——饱和策略
+- 术语：饱和策略
+- 印象：饱和策略在有界队列被填满后开始发挥作用。`ThreadPoolExecutor`的饱和策略可以通过调用`setRejectedExecutionHandler`来修改。JDK提供了几种不同的`RejectedExecutionHandler`实现，每种实现都包含有不同的饱和策略：
+	- AbortPolicy
+	- CallerRunsPolicy
+	- DiscardPolicy
+	- DiscardOldestPolicy
+- 例子：
+	- 中止（Abort）策略是默认的饱和策略。
