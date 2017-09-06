@@ -33,3 +33,7 @@
 	- `CyclicBarrier`有一个很有意思的优点，你可以传入一个额外的`Runnable`对象作为初始化参数，`CyclicBarrier`会在所有线程都已到达公共点时将其作为一个线程来执行。这个特性使得`CyclicBarrier`非常适合使用「分而治之」的手段来实现并行任务的处理。
 	- 重置一个`CyclicBarrier`对象：`CyclicBarrier`和`CountDownLatch`有着许多的共同点，不过`CyclicBarrier`对象可以重置，但`CountDownLatch`却不行。我们可以通过`reset()`方法对`CyclicBarrier`对象进行重置。一旦执行了重置操作，那么所有在`await()`方法中等待的线程将会收到一个`BrokenBarrierException`异常，程序可以捕获这个异常，并在捕获后执行一些额外的操作，比如重新执行或从中断点恢复等。
 - 例子：「分组统计矩阵中随机数出现次数」的例子。
+
+## 术语卡——Phaser
+- 术语：Phaser
+- 印象：
